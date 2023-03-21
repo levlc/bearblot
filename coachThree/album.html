@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  {{> head}}
+  <body>
+    {{> header}}
+    <div class="container">
+      <div class="main">
+       <form action='/search'>
+          <input placeholder="Search..." value="{{#query}}{{query}}{{/query}}" name="q" id="search" type="text" />
+       </form>
+        <h1>list of illustrations</h1>
+        
+<div class="posts">
+  {{#allEntries}}
+{{#tagged.album}}
+  <!-- These posts have photos -->
+  {{#thumbnail.large.url}}
+  <a href="{{{url}}}" style="
+    max-width:{{thumbnail.large.width}};
+    max-height:{{thumbnail.large.height}};
+    width:calc({{thumbnail.large.width}}px*{{thumbnail_size}}/{{thumbnail.large.height}});
+    flex-grow:calc({{thumbnail.large.width}}*{{thumbnail_size}}/{{thumbnail.large.height}})">
+    <i style="padding-bottom:{{thumbnail.large.ratio}}"></i>
+    <img src="{{{thumbnail.large.url}}}" class="pre-loaded" onload="this.className+=' loaded';" />
+  </a>
+  {{/thumbnail.large.url}}
+{{/tagged.album}}
+  {{/allEntries}}
+</div>  
+
+        <p ><a class="small date" href="/notes">recent notes &rarr;</a>&nbsp;&nbsp;<a class="small date" href="/tags">all tags &rarr;</a></p>        
+      </div>
+    </div>
+    {{> footer}}
+  </body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  {{> head}}
+  <body>
+    {{> header}}
+    <div class="container">
+      <div class="main">
+        <form action='/search'>
+          <input placeholder="Search..." value="{{#query}}{{query}}{{/query}}" name="q" id="search" type="text" />
+        </form>
+        {{#entries}}
+
+          {{#is.index_layout.titles}}
+            <p><a href="{{{url}}}">{{title}}</a><br>
+            <a class="small date" href="{{{url}}}">{{date}}</a>
+            {{#tags}}
+            <a class="small tag" href="/tagged/{{slug}}">{{name}}</a>
+            {{/tags}}
+            </p>
+            <div class="clear"></div>
+          {{/is.index_layout.titles}}
+
+          {{#is.index_layout.title_and_summary}}
+            <p><a href="{{{url}}}">{{title}}</a><span style="display: block;margin:0.5em 0">{{{summary}}}</span>
+            <span class="small date" style="font-weight: 300" href="{{{url}}}">{{date}}</span>
+            {{#tags}}
+            <a class="small tag" id="{{tag}}" href="/tagged/{{slug}}">{{name}}</a>
+            <style>
+              a[id="album"] {display:none}
+              a[id="journal"] {display:none}
+              a[id^="source:"] {color:{{second_color}}; font-weight: 300; white-space: nowrap;}
+            </style>
+            {{/tags}}
+            </p>
+            <div class="clear" style="margin-bottom: 2em"></div>
+          {{/is.index_layout.title_and_summary}}
+
+          {{#is.index_layout.post_in_full}}
+          <div class="entry on-index-page" data-url="{{{url}}}">
+            {{{html}}}
+            <p>
+              <a class="small date" href="{{{url}}}">{{date}}</a>
+              {{#tags}}
+              <a class="small tag" href="/tagged/{{slug}}">{{name}}</a>
+              {{/tags}}
+              </p>
+            <div class="clear"></div>
+          </div>
+          {{/is.index_layout.post_in_full}}            
+
+        {{/entries}}
+
+        {{#pagination}}
+        <div class="pagination">
+            page {{current}} of {{total}}
+          {{#previous}}
+            <a href="/page/{{previous}}">&uarr; newer</a>
+          {{/previous}}
+          {{#next}}
+            <a href="/page/{{next}}">older &darr;</a>
+          {{/next}}
+            <a href="/feed.rss">rss feed &rarr;</a>
+        </div>
+        {{/pagination}}
+        {{> footer}}
+      </div>
+    </div>
+  </body>
+</html>

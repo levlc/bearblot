@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  {{> head}}
+  <body>
+    {{> header}}
+    <div class="container">
+      <div class="main">
+        <form action='/search'>
+          <input placeholder="Search..." value="{{#query}}{{query}}{{/query}}" name="q" id="search" type="text" />
+        </form>
+        <h1 style="text-transform: lowercase;">{{error.title}}</h1>
+        <img src="/_graphic/clothespin.png" width="2400" height="1260" data-action="zoom">
+        <p>Something has gone wrong.<br>{{error.message}}</p>
+          <a class="small date" href="/notes">recent notes &rarr;</a>
+          <hr class="minimal">
+          <p id="insert_random"></p>
+            <script type="text/javascript">
+            getRandomEntry(function (err, entry) {
+              renderEntry(document.getElementById("insert_random"), entry);
+            });
+            function renderEntry(node, entry) {
+              node.innerHTML = `<a class="rounded-link" href="${entry.url}"><span class="summary">random note:</span><span class="title">${entry.title}</span><span class="summary">${entry.summary}</span></a>`;
+            }
+            function getRandomEntry(callback) {
+              var request = new XMLHttpRequest();
+              var data;
+              request.open("GET", "/random?json=true", true);
+              request.onload = function () {
+                if (request.status >= 200 && request.status < 400) {
+                  data = JSON.parse(request.responseText);
+                  callback(null, data.entry);
+                } else {
+                  callback(new Error("Failed to get random entry"));
+                }
+              };
+              request.send();
+            }
+            </script>
+          <a class="rounded-link" href="/synthes">
+            <span class="summary">synthes and incremental writing &rarr;</span>
+          </a>
+          </div>
+        {{> footer}}
+      </div>
+    </div>
+  </body>
+</html>

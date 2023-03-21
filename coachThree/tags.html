@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  {{> head}}
+  <body>
+    {{> header}}
+    <div class="container">
+      <div class="main">
+       <form action='/search'>
+         <input placeholder="Search..." value="{{#query}}{{query}}{{/query}}" name="q" id="search" type="text" />
+       </form>
+    <h1>tags</h1>
+    {{#popular_tags}}
+      <span id="{{tag}}">
+        <a class="small" href="/tagged/{{slug}}">{{tag}}</a>
+        <small>{{entries.length}} notes</small><br>
+      </span>
+      <style>
+      span[id^="source:"] {display:none}
+      span[id="album"] {display:none}
+      span[id="journal"] {display:none}
+      </style>
+    {{/popular_tags}}
+      <p><a class="small date" href="/synthes">synthes and incremental writing &rarr;</a>&nbsp;</p>
+    </div></div>
+    {{> footer}}
+  </body>
+</html>

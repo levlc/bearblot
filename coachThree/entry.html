@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  {{> head}}
+  <body>
+    {{> header}}
+    <div class="container">
+      <div class="main">
+        <form action='/search'>
+          <input placeholder="Search..." value="{{#query}}{{query}}{{/query}}" name="q" id="search" type="text" />
+        </form>
+        <div class="entry">
+        {{#entry}}
+          
+          {{{html}}}
+        <!--<p><a class="small date" href="/notes">recent notes &rarr;</a>&nbsp;</p>-->
+
+          {{#tags.length}}
+          <hr class="minimal">
+          <div class="left-label">
+          <a href="/tags"><h5>TAGS</h5></a>
+          {{#tags}}
+          <!--<li style="list-style-type: none;">-->
+          <a class="small tag" id="{{tag}}" href="/tagged/{{slug}}">{{name}}</a>
+          {{/tags}}
+          </div>          
+            <style>
+              a[id="album"] {display:none}
+              a[id^="source:"] {color:{{second_color}}; font-weight: 400; white-space: nowrap;}
+              a[id="journal"] {color:{{accent_color}}; font-weight: 400; white-space: nowrap;}
+            </style>
+          {{/tags.length}}
+          
+          {{#backlinks.length}}
+
+          <div class="left-label">
+          <a href="/notes"><h5>LINK</h5>
+          {{#backlinks}}
+          <a class="rounded-link" href="{{{url}}}">
+            <span class="title">{{title}}</span>
+            <span class="summary">{{summary}}</span>
+          </a>          
+          {{/backlinks}}
+          </div>          
+          {{/backlinks.length}}
+
+<!--more links-->
+          {{#date}}
+
+          <div class="left-label">
+          <a href="/"><h5>INFO</h5></a>
+          {{date}}
+
+          <p id="insert_random"></p>
+            <script type="text/javascript">
+            getRandomEntry(function (err, entry) {
+              renderEntry(document.getElementById("insert_random"), entry);
+            });
+            function renderEntry(node, entry) {
+              node.innerHTML = `<a class="rounded-link" href="${entry.url}"><span class="summary">random note:</span><span class="title">${entry.title}</span><span class="summary">${entry.summary}</span></a>`;
+            }
+            function getRandomEntry(callback) {
+              var request = new XMLHttpRequest();
+              var data;
+              request.open("GET", "/random?json=true", true);
+              request.onload = function () {
+                if (request.status >= 200 && request.status < 400) {
+                  data = JSON.parse(request.responseText);
+                  callback(null, data.entry);
+                } else {
+                  callback(new Error("Failed to get random entry"));
+                }
+              };
+              request.send();
+            }
+            </script>
+          <a class="rounded-link" href="/synthes">
+            <span class="summary">synthes and incremental writing &rarr;</span>
+          </a>
+          </div>
+          {{/date}}
+<!--random ^ link-->
+          
+          <div class="clear"></div>
+          {{> pluginHTML}}
+          <div class="clear"></div>
+
+        {{/entry}}
+        
+        </div>
+        {{> footer}}
+      </div>
+    </div>
+  </body>
+</html>
